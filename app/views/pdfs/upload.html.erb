@@ -1,0 +1,5 @@
+Copy<h1>Upload PDF</h1>
+<%= form_tag('/upload', multipart: true) do %>
+  <%= file_field_tag :pdf %>
+  <%= submit_tag 'Upload' %>
+<% end %>

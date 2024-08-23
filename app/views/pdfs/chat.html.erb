@@ -1,0 +1,30 @@
+<h1>Chat with <%= @pdf.filename %></h1>
+<div id="chat-container">
+  <div id="chat-messages"></div>
+  <input type="text" id="user-input" placeholder="Ask a question...">
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+function sendMessage() {
+  var input = document.getElementById('user-input');
+  var message = input.value;
+  input.value = '';
+
+  var chatMessages = document.getElementById('chat-messages');
+  chatMessages.innerHTML += '<p><strong>You:</strong> ' + message + '</p>';
+
+  fetch('/chat/<%= @pdf.id %>', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+    },
+    body: JSON.stringify({ question: message })
+  })
+  .then(response => response.json())
+  .then(data => {
+    chatMessages.innerHTML += '<p><strong>AI:</strong> ' + data.response + '</p>';
+  });
+}
+</script>
