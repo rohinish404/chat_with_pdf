@@ -1,6 +1,7 @@
 import sys
 import groq
 import PyPDF2
+import os
 
 def extract_text_from_pdf(pdf_path):
     with open(pdf_path, 'rb') as file:
@@ -11,7 +12,7 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 def chat_with_groq(pdf_text, question):
-    client = groq.Client(api_key="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")
+    client = groq.Client(api_key=os.getenv("GROQ_API_KEY"))
     response = client.chat.completions.create(
         messages=[
             {"role": "system", "content": f"You are an AI assistant that answers questions based on the following PDF content: {pdf_text}"},
